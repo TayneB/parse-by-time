@@ -1,6 +1,8 @@
 {
+  "type": "module",
   "dependencies": {
     "node": "^21.6.2",
+    "node-fetch": "^3.3.2",
     "superagent": "^8.1.2"
   }
 }
