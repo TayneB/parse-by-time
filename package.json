@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "node": "^21.6.2",
+    "superagent": "^8.1.2"
+  }
+}
