@@ -1,14 +1,22 @@
 const clientId = process.env.CLIENT_ID
 const clientSecret = process.env.CLIENT_SECRET
-const clientCredentials = btoa(`${clientId}:${clientSecret}`)
+const clientCredentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
+  'base64'
+)
 const tokenUrl = 'https://www.warcraftlogs.com/oauth/token'
 const apiUrl = ``
 
-console.log(clientCredentials)
 const getAccessToken = async () => {
   const response = await fetch(tokenUrl, {
     method: 'POST',
+    headers: {
+      Authorization: `Basic ${clientCredentials}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'grant_type=client_credentials',
   })
+
+  return response.json()
 }
 
-getAccessToken()
+getAccessToken().then((response) => console.log(response))
