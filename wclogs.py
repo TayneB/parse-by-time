@@ -2,8 +2,6 @@ import requests
 import os
 from dotenv import load_dotenv
 
-print(os.getenv('CLIENT_ID'))
-
 load_dotenv()
 
 tokenUrl = 'https://www.warcraftlogs.com/oauth/token'
