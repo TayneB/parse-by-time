@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 const clientId = process.env.CLIENT_ID
 const clientSecret = process.env.CLIENT_SECRET
 const clientCredentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
@@ -9,11 +11,11 @@ const apiUrl = ``
 const getAccessToken = async () => {
   const response = await fetch(tokenUrl, {
     method: 'POST',
+    body: 'grant_type=client_credentials',
     headers: {
       Authorization: `Basic ${clientCredentials}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: 'grant_type=client_credentials',
   })
 
   return response.json()

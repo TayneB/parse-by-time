@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-tokenUrl = 'https://www.warcraftlogs.com/oauth/token'
+tokenUrl = 'https://www.warcraftlogs.com/oauth/v2/token'
 
 def get_token():
   data = {"grant_type": "client_credentials"}
