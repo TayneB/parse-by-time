@@ -23,15 +23,7 @@ const getAccessToken = async () => {
   return data.access_token
 }
 
-const token = async () => {
-  try {
-    const access_token = JSON.parse(fs.readFileSync('token.txt', 'utf8'))
-    return access_token
-  } catch (error) {
-    getAccessToken()
-    console.log('Error:', error)
-  }
-}
+const { access_token } = JSON.parse(fs.readFileSync('token.txt', 'utf8'))
 
 const query = `
     query {
@@ -46,7 +38,6 @@ const query = `
   `
 
 const getData = async () => {
-  const access_token = await token()
   const response = await fetch(apiUrl, {
     method: 'POST',
     headers: {
@@ -60,6 +51,6 @@ const getData = async () => {
 }
 
 getData().then((response) => {
-  const characterData = response.data
+  const characterData = response.data.characterData.character
   console.log(characterData)
 })
