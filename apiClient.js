@@ -24,17 +24,9 @@ const getAccessToken = async () => {
     ...data,
     expiration_date: new Date().getTime() + data.expires_in * 1000,
   }
+  console.log('Grabbing new token')
   fs.writeFileSync('token.txt', JSON.stringify(data))
   return data.access_token
-}
-
-if (fs.existsSync('token.txt')) {
-  const tokenContent = fs.readFileSync('token.txt', 'utf8')
-  const parsedToken = JSON.parse(tokenContent)
-
-  if (parsedToken.expiration_date > new Date().getTime()) {
-    await getAccessToken()
-  }
 }
 
 const query = `
@@ -50,6 +42,14 @@ const query = `
   `
 
 const getData = async () => {
+  if (!fs.existsSync('token.txt')) {
+    await getAccessToken()
+  } else if (
+    JSON.parse(fs.readFileSync('token.txt', 'utf8')).expiration_date >
+    new Date().getTime()
+  ) {
+    await getAccessToken()
+  }
   const { access_token } = await JSON.parse(
     fs.readFileSync('token.txt', 'utf8')
   )
