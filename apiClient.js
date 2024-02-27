@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import fs, { write } from 'fs'
+import { get } from 'http'
 
 const clientId = process.env.CLIENT_ID
 const clientSecret = process.env.CLIENT_SECRET
@@ -18,12 +19,23 @@ const getAccessToken = async () => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   })
-  const data = await response.json()
+  let data = await response.json()
+  data = {
+    ...data,
+    expiration_date: new Date().getTime() + data.expires_in * 1000,
+  }
   fs.writeFileSync('token.txt', JSON.stringify(data))
   return data.access_token
 }
 
-const { access_token } = JSON.parse(fs.readFileSync('token.txt', 'utf8'))
+if (fs.existsSync('token.txt')) {
+  const tokenContent = fs.readFileSync('token.txt', 'utf8')
+  const parsedToken = JSON.parse(tokenContent)
+
+  if (parsedToken.expiration_date > new Date().getTime()) {
+    await getAccessToken()
+  }
+}
 
 const query = `
     query {
@@ -38,6 +50,9 @@ const query = `
   `
 
 const getData = async () => {
+  const { access_token } = await JSON.parse(
+    fs.readFileSync('token.txt', 'utf8')
+  )
   const response = await fetch(apiUrl, {
     method: 'POST',
     headers: {
