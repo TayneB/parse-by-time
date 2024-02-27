@@ -1,6 +1,5 @@
 import 'dotenv/config'
-import fs, { write } from 'fs'
-import { get } from 'http'
+import fs from 'fs'
 
 const clientId = process.env.CLIENT_ID
 const clientSecret = process.env.CLIENT_SECRET
@@ -40,7 +39,9 @@ const query = `
       }
     }
   `
-// cant do || or && operator because fs causes errors and borks the code if it fails
+
+// cant do || or && operator because fs causes errors rather than returning false
+
 const getData = async () => {
   if (!fs.existsSync('token.txt')) {
     await getAccessToken()
