@@ -45,7 +45,7 @@ const getData = async () => {
   if (!fs.existsSync('token.txt')) {
     await getAccessToken()
   } else if (
-    JSON.parse(fs.readFileSync('token.txt', 'utf8')).expiration_date >
+    JSON.parse(fs.readFileSync('token.txt', 'utf8')).expiration_date <
     new Date().getTime()
   ) {
     await getAccessToken()
