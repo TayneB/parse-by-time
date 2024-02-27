@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import fs, { write } from 'fs'
 
 const clientId = process.env.CLIENT_ID
 const clientSecret = process.env.CLIENT_SECRET
@@ -18,10 +19,19 @@ const getAccessToken = async () => {
     },
   })
   const data = await response.json()
+  fs.writeFileSync('token.txt', JSON.stringify(data))
   return data.access_token
 }
 
-const bearerToken = await getAccessToken()
+const token = async () => {
+  try {
+    const access_token = JSON.parse(fs.readFileSync('token.txt', 'utf8'))
+    return access_token
+  } catch (error) {
+    getAccessToken()
+    console.log('Error:', error)
+  }
+}
 
 const query = `
     query {
@@ -36,11 +46,12 @@ const query = `
   `
 
 const getData = async () => {
+  const access_token = await token()
   const response = await fetch(apiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${bearerToken}`,
+      Authorization: `Bearer ${access_token}`,
     },
     body: JSON.stringify({ query }),
   })
@@ -49,6 +60,6 @@ const getData = async () => {
 }
 
 getData().then((response) => {
-  const characterData = response.data.characterData.character
+  const characterData = response.data
   console.log(characterData)
 })
