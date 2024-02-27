@@ -40,7 +40,7 @@ const query = `
       }
     }
   `
-
+// cant do || or && operator because fs causes errors and borks the code if it fails
 const getData = async () => {
   if (!fs.existsSync('token.txt')) {
     await getAccessToken()
