@@ -1,6 +1,6 @@
 import fs from 'fs'
-import { getAccessToken } from './tokenAcquisition.js'
-import { characterData as Query } from './queries/character.js'
+import { getAccessToken } from './tokenAcquisition.ts'
+import { characterData as Query } from './queries/character.ts'
 
 const apiUrl = 'https://www.warcraftlogs.com/api/v2/client'
 
