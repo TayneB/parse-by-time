@@ -1,3 +1,5 @@
+This was built from the ground up using no template. Which was a great learning experience (mistake, haha), currently creating new version that will use similar logic but be based off of a vite react-ts template and be using typescript and react immediately instead of trying to glue typescript into node and then deprecating it once I include a server.
+
 ## Intended Functions:
 - parse player data by time
 - find high parses based on entered characters parse time (per boss)
